@@ -1,0 +1,5 @@
+project_id = "f6cd4104-52a5-4890-8195-3b0791bce2f5"
+cluster_name = "my-mke-cluster"
+master_count = 1
+worker_count = 1
+
