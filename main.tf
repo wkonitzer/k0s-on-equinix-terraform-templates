@@ -31,7 +31,7 @@ locals {
       user    = "root"
       keyPath = "./ssh_keys/${var.cluster_name}.pem"
     }
-    role = "master"
+    role = "manager"
   }]
 
   workers = [for ip in local.worker_public_ips : {
