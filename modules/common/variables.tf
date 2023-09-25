@@ -21,3 +21,20 @@ variable "ip_block_size" {
   type        = number
   default     = 8
 }
+
+variable "use_reserved_hardware" {
+  description = "Flag to decide if reserved hardware should be used."
+  type        = bool
+}
+
+variable "masters_ids" {
+  description = "IDs for the master machines"
+  type        = list(string)
+  default     = []
+}
+
+variable "workers_ids" {
+  description = "IDs for the worker machines"
+  type        = list(string)
+  default     = []
+}

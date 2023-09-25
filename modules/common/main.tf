@@ -57,7 +57,17 @@ resource "equinix_metal_reserved_ip_block" "public_ip_block" {
   description = "Public IP Block for ${var.cluster_name}"
 }
 
+resource "null_resource" "dependency_trigger" {
+  count = var.use_reserved_hardware ? 1 : 0
+
+  triggers = {
+    master_ids = join(",", var.masters_ids)
+    worker_ids = join(",", var.workers_ids)
+  }
+}
+
 resource "equinix_metal_gateway" "gateway" {
+  depends_on = [null_resource.dependency_trigger]
   project_id        = var.project_id
   vlan_id           = equinix_metal_vlan.vlan.id
   ip_reservation_id = equinix_metal_reserved_ip_block.public_ip_block[0].id
@@ -67,4 +77,3 @@ resource "equinix_metal_gateway" "gateway" {
     command = "sleep 20"
   }
 }
-
