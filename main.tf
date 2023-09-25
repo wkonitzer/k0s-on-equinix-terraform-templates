@@ -154,7 +154,3 @@ module "workers" {
     reserved_hardware     = slice(var.metros[0].reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
   }]
 }
-
-output "mke_cluster" {
-  value = yamlencode(local.launchpad_tmpl)
-}

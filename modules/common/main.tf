@@ -58,7 +58,7 @@ resource "equinix_metal_reserved_ip_block" "public_ip_block" {
 }
 
 resource "null_resource" "dependency_trigger" {
-  count = var.use_reserved_hardware ? 1 : 0
+  count = var.use_reserved_hardware ? 1 : 0 
 
   triggers = {
     master_ids = join(",", var.masters_ids)
@@ -66,8 +66,16 @@ resource "null_resource" "dependency_trigger" {
   }
 }
 
+resource "null_resource" "delay" {
+  count = var.use_reserved_hardware ? 1 : 0
+  
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+}
+
 resource "equinix_metal_gateway" "gateway" {
-  depends_on = [null_resource.dependency_trigger]
+  depends_on = [null_resource.delay, null_resource.dependency_trigger]
   project_id        = var.project_id
   vlan_id           = equinix_metal_vlan.vlan.id
   ip_reservation_id = equinix_metal_reserved_ip_block.public_ip_block[0].id
