@@ -7,3 +7,8 @@ output "hosts" {
   value       = concat(local.managers, local.workers)
   description = "All hosts in the cluster"
 }
+
+output "lb_address_range" {
+  value = local.lb_address_range
+  description = "load balancer address range"
+}
