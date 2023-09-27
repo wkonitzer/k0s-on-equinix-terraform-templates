@@ -4,9 +4,6 @@ locals {
       for i in range(var.machine_count) : {
         key = "${m.metro}-${i}",
         value = merge({
-          #addr                    = cidrhost("${local.vlans[m.metro][0].subnet}/24", 2)
-          #mask                    = local.vlans[m.metro][0].mask
-          #vlan_id                 = local.vlans[m.metro][0].vlan_id 
           metro                   = m.metro,
           plan                    = (i < length(m.reserved_hardware)) ? m.reserved_hardware[i].plan : var.machine_size,
           hardware_reservation_id = (i < length(m.reserved_hardware)) ? m.reserved_hardware[i].id : ""
