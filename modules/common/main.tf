@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    equinix = {
-      source  = "equinix/equinix"
-    }
-    local = {
-      source = "hashicorp/local"
-    }
-  }
-}
-
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
   rsa_bits  = "4096"

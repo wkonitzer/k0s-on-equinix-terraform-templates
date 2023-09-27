@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    equinix = {
-      source  = "equinix/equinix"
-    }
-  }  
-}
-
 locals {
   nodes_meta_flat = flatten([
     for m in var.metros : [
