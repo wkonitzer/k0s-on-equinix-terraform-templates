@@ -1,6 +1,6 @@
-# Bootstrapping MKE cluster on Equinix Metal
+# Bootstrapping k0s cluster on Equinix Metal
 
-This directory provides an example flow for using Mirantis Launchpad with Terraform and Equinix Metal.
+This directory provides an example flow for using k0sctl with Terraform and Equinix Metal.
 
 ## Prerequisites
 
@@ -15,4 +15,4 @@ This directory provides an example flow for using Mirantis Launchpad with Terraf
 1. Create terraform.tfvars file with needed details. You can use the provided terraform.tfvars.example as a baseline.
 2. `terraform init`
 3. `terraform apply`
-4. `terraform output --raw mke_cluster | launchpad apply --config -`
+4. `terraform output --raw mke_cluster | k0sctl apply --config -`
