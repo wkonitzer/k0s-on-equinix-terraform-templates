@@ -1,6 +1,6 @@
-output "mke_cluster" {
+output "k0s_cluster" {
   value = yamlencode(local.launchpad_tmpl)
-  description = "The launchpad template in yaml format"
+  description = "The k0sctl template in yaml format"
 }
 
 output "hosts" {

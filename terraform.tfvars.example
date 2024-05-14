@@ -1,5 +1,5 @@
 project_id            = "f8e35958-b515-4d61-9bdd-0ec3c5f715e9" #Equinix project
-cluster_name          = "my-mke-cluster"
+cluster_name          = "my-k0s-cluster"
 master_count          = 1
 worker_count          = 1
 metros                = [
@@ -18,5 +18,3 @@ metros                = [
   }
 ]
 use_reserved_hardware = false
-license_file_path     = "/Users/wkonitzer/Documents/docker-enterprise.lic"
-mke_version           = "3.7.0"

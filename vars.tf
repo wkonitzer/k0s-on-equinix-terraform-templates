@@ -17,7 +17,7 @@ variable "use_reserved_hardware" {
 }
 
 variable "cluster_name" {
-  default = "mke"
+  default = "k0s"
 }
 
 variable "master_count" {
@@ -55,22 +55,4 @@ variable "reserved_ip_addresses" {
   description = "List of reserved IP addresses"
   type        = list(string)
   default     = []
-}
-
-variable "mke_version" {
-  default = "3.6.6"
-}
-
-variable "admin_password" {
-  default = "orcaorcaorca"
-}
-
-variable "license_file_path" {
-  description = "Path to the Docker Enterprise license file."
-  type        = string
-  default     = null
-}
-
-variable "mcr_version" {
-  default = "23.0.6"
 }

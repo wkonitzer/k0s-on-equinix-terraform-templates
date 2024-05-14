@@ -52,7 +52,7 @@ locals {
   nearest_power_of_2        = ceil(pow(2, ceil(log(local.required_ips, 2))))
   ip_block_size             = local.nearest_power_of_2
   
-  # Hosts for MKE cluster
+  # Hosts for k0s cluster
   master_public_ips         = module.masters.public_ips
   worker_public_ips         = module.workers.public_ips
 
@@ -62,7 +62,7 @@ locals {
       user    = "root"
       keyPath = "./ssh_keys/${var.cluster_name}.pem"
     }
-    role = "manager"
+    role = "controller"
   }]
 
   workers = [for ip in local.worker_public_ips : {
@@ -74,36 +74,14 @@ locals {
     role = "worker"
   }]
 
-  # Define the base mke map
-  base_mke = {
-    version       = var.mke_version
-    adminUsername = "admin"
-    adminPassword = var.admin_password
-    installFlags  = [
-      "--default-node-orchestrator=kubernetes",
-      "--pod-cidr 172.16.0.0/16",
-      "--service-cluster-ip-range=172.17.0.0/16",
-    ]
-  }
-
-  # Merge the licenseFilePath if it's not null
-  license_map = var.license_file_path != null ? { licenseFilePath = var.license_file_path } : {}
-  merged_mke = merge(local.base_mke, local.license_map)
-
-  # MKE cluster configuration
+  # k0s cluster configuration
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/mke/v1.3"
-    kind       = "mke"
+    apiVersion = "k0sctl.k0sproject.io/v1beta1"
+    kind       = "Cluster"
     metadata = {
       name = var.cluster_name
     }
     spec = {
-      mcr = {
-        channel = "stable"
-        repoURL = "https://repos.mirantis.com"
-        version = var.mcr_version
-      }
-      mke = local.merged_mke
       hosts = concat(local.managers, local.workers)
     }
   }
