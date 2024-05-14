@@ -27,7 +27,7 @@ resource "equinix_metal_project_ssh_key" "ssh_key_object" {
 
 data "equinix_metal_project_ssh_key" "infra_ssh" {
   depends_on = [equinix_metal_project_ssh_key.ssh_key_object]
-  search     = equinix_metal_project_ssh_key.ssh_key_object.name
+  id         = equinix_metal_project_ssh_key.ssh_key_object.id
   project_id = var.project_id
 }
 
