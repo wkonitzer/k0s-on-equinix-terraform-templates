@@ -18,10 +18,13 @@ locals {
 
   # IP calculations
   all_ips_list              = [for i in range(0, pow(2, (32 - split("/", module.common.reserved_ip_cidr)[1])) - 2) : cidrhost(module.common.reserved_ip_cidr, i+2)]
-  all_ips                   = { for idx, ip in local.all_ips_list : format("sv-%d", idx) => ip }
+  all_ips                   = { for idx, ip in local.all_ips_list : format("%s-%d", var.metros[0].metro, idx) => ip }
   master_ips                = var.master_count > 0 ? { for k, v in local.all_ips : k => v if tonumber(substr(k, 3, -1)) < var.master_count } : {}
   master_count_actual       = length(local.master_ips)
-  worker_ips                = { for idx in range(0, var.worker_count) : format("sv-%d", idx) => local.all_ips[format("sv-%d", idx + local.master_count_actual)] }
+  worker_ips = {
+    for idx in range(0, var.worker_count) :
+    format("%s-%d", var.metros[0].metro, idx) => local.all_ips[format("%s-%d", var.metros[0].metro, idx + local.master_count_actual)]
+  }
 
   # IPs used by masters and workers
   used_ips = merge(
