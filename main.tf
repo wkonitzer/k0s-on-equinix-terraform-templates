@@ -111,12 +111,10 @@ module "masters" {
   reserved_ip_cidr        = module.common.reserved_ip_cidr
   ssh_private_key_path    = module.common.private_key_path
   project_id              = var.project_id
-  metros = [
-    for metro in var.metros : {
-      metro                 = metro.metro
-      reserved_hardware     = slice(metro.reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
-    }
-  ]
+  metros                  = [{
+    metro                 = var.metros[0].metro,
+    reserved_hardware     = slice(var.metros[0].reserved_hardware, 0, local.master_reserved_hardware)
+  }]
 }
 
 module "workers" {
@@ -131,10 +129,8 @@ module "workers" {
   reserved_ip_cidr        = module.common.reserved_ip_cidr
   ssh_private_key_path    = module.common.private_key_path
   project_id              = var.project_id
-  metros = [
-    for metro in var.metros : {
-      metro                 = metro.metro
-      reserved_hardware     = slice(metro.reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
-    }
-  ]
+  metros                  = [{
+    metro                 = var.metros[0].metro,
+    reserved_hardware     = slice(var.metros[0].reserved_hardware, 0, local.master_reserved_hardware)
+  }]
 }
