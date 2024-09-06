@@ -15,4 +15,4 @@ This directory provides an example flow for using k0sctl with Terraform and Equi
 1. Create terraform.tfvars file with needed details. You can use the provided terraform.tfvars.example as a baseline.
 2. `terraform init`
 3. `terraform apply`
-4. `terraform output --raw mke_cluster | k0sctl apply --config -`
+4. `terraform output --raw k0s_cluster | k0sctl apply --config -`
