@@ -2,9 +2,10 @@ project_id            = "f6cd4104-52a5-4890-8195-3b0791bce2f5" #Equinix project
 cluster_name          = "my-k0s-cluster"
 master_count          = 1
 worker_count          = 1
+machine_size          = "c3.large.arm64"
 metros                = [
   {
-    metro             = "sv",
+    metro             = "da",
     reserved_hardware = [
       {
         id            = "a5c17fdf-dc70-43de-94a0-61703a35c126",

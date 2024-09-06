@@ -10,6 +10,12 @@ export TF_VAR_project_id="XXXXXXXXXXX"
 EOT
 }
 
+# Machines configuration
+variable "machine_size" {
+  default = "c3.small.x86"
+  type    = string
+}
+
 variable "use_reserved_hardware" {
   description = "Flag to decide if reserved hardware should be used."
   type        = bool

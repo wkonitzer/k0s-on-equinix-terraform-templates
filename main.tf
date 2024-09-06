@@ -103,6 +103,7 @@ module "masters" {
   source                  = "./modules/machine"
   cluster_name            = var.cluster_name
   machine_count           = var.master_count
+  machine_size            = var.machine_size
   ssh_key                 = module.common.ssh_key
   hostname                = "${var.cluster_name}-master"
   vlan                    = module.common.vxlan
@@ -110,16 +111,19 @@ module "masters" {
   reserved_ip_cidr        = module.common.reserved_ip_cidr
   ssh_private_key_path    = module.common.private_key_path
   project_id              = var.project_id
-  metros                  = [{
-    metro                 = "sv",
-    reserved_hardware     = slice(var.metros[0].reserved_hardware, 0, local.master_reserved_hardware)
-  }]
+  metros = [
+    for metro in var.metros : {
+      metro                 = metro.metro
+      reserved_hardware     = slice(metro.reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
+    }
+  ]
 }
 
 module "workers" {
   source                  = "./modules/machine"
   cluster_name            = var.cluster_name
   machine_count           = var.worker_count
+  machine_size            = var.machine_size
   ssh_key                 = module.common.ssh_key
   hostname                = "${var.cluster_name}-worker"
   vlan                    = module.common.vxlan
@@ -127,8 +131,10 @@ module "workers" {
   reserved_ip_cidr        = module.common.reserved_ip_cidr
   ssh_private_key_path    = module.common.private_key_path
   project_id              = var.project_id
-  metros                  = [{
-    metro                 = "sv",
-    reserved_hardware     = slice(var.metros[0].reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
-  }]
+  metros = [
+    for metro in var.metros : {
+      metro                 = metro.metro
+      reserved_hardware     = slice(metro.reserved_hardware, local.master_reserved_hardware, local.master_reserved_hardware + local.worker_reserved_hardware)
+    }
+  ]
 }
