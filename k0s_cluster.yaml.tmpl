@@ -1,0 +1,24 @@
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: ${cluster_name}
+spec:
+  hosts:
+%{ for host in hosts ~}
+  - role: ${host.role}
+    ssh:
+      address: ${host.ssh.address}
+      keyPath: ${host.ssh.keyPath}
+      user: ${host.ssh.user}
+%{ endfor ~}
+  k0s:
+    config:
+      spec:
+        extensions:
+          helm:
+            repositories:
+              - name: metallb
+                url: https://metallb.github.io/metallb
+            charts:
+              - name: metallb
+
