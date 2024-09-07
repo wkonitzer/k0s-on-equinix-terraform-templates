@@ -9,8 +9,7 @@ This directory provides an example flow for using k0sctl with Terraform and Equi
 * k0sctl [installed](https://github.com/k0sproject/k0sctl/releases)
 * The Terraform `equinix` provider requires a number of environment variables to be set. Please refer to the [Terraform Equinix Provider](https://registry.terraform.io/providers/equinix/equinix/latest/docs) documentation for more details. The minimum required environment variables for this example are:
 * kubectl installed
-
-  * METAL_AUTH_TOKEN
+* METAL_AUTH_TOKEN
 
 ## Steps
 
