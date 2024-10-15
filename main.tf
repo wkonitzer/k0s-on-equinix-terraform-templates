@@ -51,7 +51,7 @@ locals {
   lb_address_range = "${local.lb_address_pool_sorted[0]}-${local.lb_address_pool_sorted[length(local.lb_address_pool_sorted)-2]}"
 
   # IP block size calculation
-  required_ips              = var.master_count + var.worker_count + 6
+  required_ips              = var.master_count + var.worker_count + 3 + var.lb_block_size
   nearest_power_of_2        = ceil(pow(2, ceil(log(local.required_ips, 2))))
   ip_block_size             = local.nearest_power_of_2
   
