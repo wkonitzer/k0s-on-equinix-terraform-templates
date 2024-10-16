@@ -37,7 +37,7 @@ resource "null_resource" "remove_ssh_key_from_agent" {
     when    = destroy
     command = <<EOT
       if [ -n "$SSH_AUTH_SOCK" ]; then
-        ssh-add -d ./ssh_keys/${self.triggers.cluster_name}.pem || true
+        ssh-add -d ./ssh_keys/${self.triggers.cluster_name}.pub || true
       fi
     EOT
   }
@@ -46,7 +46,10 @@ resource "null_resource" "remove_ssh_key_from_agent" {
     cluster_name = var.cluster_name
   }
 
-  depends_on = [local_file.ssh_private_key]
+  depends_on = [
+    local_file.ssh_private_key,
+    local_file.ssh_public_key
+  ]
 }
 
 resource "equinix_metal_project_ssh_key" "ssh_key_object" {
