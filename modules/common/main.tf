@@ -25,9 +25,12 @@ resource "null_resource" "add_ssh_key_to_agent" {
     EOT
   }
 
+  # This provisioner should only run when the private key is created or changed
   triggers = {
-    private_key_checksum = filemd5("ssh_keys/${var.cluster_name}.pem")
+    private_key_checksum = fileexists("ssh_keys/${var.cluster_name}.pem") ? filemd5("ssh_keys/${var.cluster_name}.pem") : ""
   }
+
+  depends_on = [local_file.ssh_private_key]
 }
 
 resource "null_resource" "remove_ssh_key_from_agent" {
