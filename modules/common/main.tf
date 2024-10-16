@@ -4,19 +4,15 @@ resource "tls_private_key" "ssh_key" {
 }
 
 resource "local_file" "ssh_private_key" {
+  file_permission = "600"
   content  = tls_private_key.ssh_key.private_key_pem
   filename = "ssh_keys/${var.cluster_name}.pem"
-  provisioner "local-exec" {
-    command = "chmod 0600 ${local_file.ssh_private_key.filename}"
-  }
 }
 
 resource "local_file" "ssh_public_key" {
+  file_permission = "600"
   content  = tls_private_key.ssh_key.public_key_openssh
   filename = "ssh_keys/${var.cluster_name}.pub"
-  provisioner "local-exec" {
-    command = "chmod 0600 ${local_file.ssh_public_key.filename}"
-  }
 }  
 
 resource "equinix_metal_project_ssh_key" "ssh_key_object" {
