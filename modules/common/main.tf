@@ -30,17 +30,22 @@ resource "null_resource" "add_ssh_key_to_agent" {
   }
 }
 
-
 resource "null_resource" "remove_ssh_key_from_agent" {
   provisioner "local-exec" {
     when    = destroy
     command = <<EOT
       if [ -n "$SSH_AUTH_SOCK" ]; then
-        ssh-add -d ssh_keys/${var.cluster_name}.pem || true
+        ssh-add -d ssh_keys/${self.triggers.cluster_name}.pem || true
       fi
     EOT
   }
-  depends_on = [tls_private_key.ssh_key]
+
+  triggers = {
+    cluster_name = var.cluster_name
+  }
+
+  # Ensure this resource depends on the key file, so it’s properly tied to the key’s lifecycle
+  depends_on = [local_file.ssh_private_key]
 }
 
 resource "equinix_metal_project_ssh_key" "ssh_key_object" {
