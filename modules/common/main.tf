@@ -46,7 +46,6 @@ resource "null_resource" "remove_ssh_key_from_agent" {
     cluster_name = var.cluster_name
   }
 
-  # Ensure this resource depends on the key file, so it’s properly tied to the key’s lifecycle
   depends_on = [local_file.ssh_private_key]
 }
 
