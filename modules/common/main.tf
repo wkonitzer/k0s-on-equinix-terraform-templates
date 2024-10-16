@@ -13,7 +13,35 @@ resource "local_file" "ssh_public_key" {
   file_permission = "600"
   content  = tls_private_key.ssh_key.public_key_openssh
   filename = "ssh_keys/${var.cluster_name}.pub"
-}  
+}
+
+resource "null_resource" "add_ssh_key_to_agent" {
+  provisioner "local-exec" {
+    command = <<EOT
+      if [ -z "$SSH_AUTH_SOCK" ]; then
+        eval "$(ssh-agent -s)"
+      fi
+      ssh-add ssh_keys/${var.cluster_name}.pem
+    EOT
+  }
+
+  triggers = {
+    private_key_checksum = filemd5("ssh_keys/${var.cluster_name}.pem")
+  }
+}
+
+
+resource "null_resource" "remove_ssh_key_from_agent" {
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
+      if [ -n "$SSH_AUTH_SOCK" ]; then
+        ssh-add -d ssh_keys/${var.cluster_name}.pem || true
+      fi
+    EOT
+  }
+  depends_on = [tls_private_key.ssh_key]
+}
 
 resource "equinix_metal_project_ssh_key" "ssh_key_object" {
   name       = "${var.cluster_name}_key"
