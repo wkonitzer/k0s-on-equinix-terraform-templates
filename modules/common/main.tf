@@ -21,7 +21,7 @@ resource "null_resource" "add_ssh_key_to_agent" {
       if [ -z "$SSH_AUTH_SOCK" ]; then
         eval "$(ssh-agent -s)"
       fi
-      ssh-add ssh_keys/${var.cluster_name}.pem
+      ssh-add ./ssh_keys/${var.cluster_name}.pem
     EOT
   }
 
@@ -37,7 +37,7 @@ resource "null_resource" "remove_ssh_key_from_agent" {
     when    = destroy
     command = <<EOT
       if [ -n "$SSH_AUTH_SOCK" ]; then
-        ssh-add -d ssh_keys/${self.triggers.cluster_name}.pem || true
+        ssh-add -d ./ssh_keys/${self.triggers.cluster_name}.pem || true
       fi
     EOT
   }
