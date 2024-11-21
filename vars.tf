@@ -62,3 +62,8 @@ variable "reserved_ip_addresses" {
   type        = list(string)
   default     = []
 }
+
+variable "operating_system" {
+  type    = string
+  default = "ubuntu_20_04"
+}
