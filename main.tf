@@ -118,6 +118,7 @@ module "masters" {
     metro                 = var.metros[0].metro,
     reserved_hardware     = slice(var.metros[0].reserved_hardware, 0, local.master_reserved_hardware)
   }]
+  operating_system        = var.operating_system
 }
 
 module "workers" {
@@ -136,4 +137,5 @@ module "workers" {
     metro                 = var.metros[0].metro,
     reserved_hardware     = slice(var.metros[0].reserved_hardware, 0, local.master_reserved_hardware)
   }]
+  operating_system        = var.operating_system
 }
